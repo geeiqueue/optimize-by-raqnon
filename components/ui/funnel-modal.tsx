@@ -16,19 +16,20 @@ export default function FunnelModal({ isOpen, onClose }: FunnelModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const GOOGLE_WEBHOOK_URL = "https://google.com";
+  // Securely declared deployment string mapping to your Google Apps Script pipeline
+  const GOOGLE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyVx_24AQ-Yl2u9K2yiUOwmNdjsAuEjBCuG3rRcomiUNf8W91z6BODM5KxWZx20lbzC/exec";
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    // Rigidly blocks webpage refreshes to protect the background pipeline transfer track
+    // Rigidly blocks webpage refreshes to protect the background data transfer
     e.preventDefault();
     if (!email || isSubmitting) return;
     
     setIsSubmitting(true);
 
     try {
-      // Physically wait for Google's cloud server database channel connection to complete
+      // Fires an asynchronous data post directly into your Google Sheets automation channel
       await fetch(GOOGLE_WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
@@ -38,7 +39,7 @@ export default function FunnelModal({ isOpen, onClose }: FunnelModalProps) {
 
       setIsSubmitted(true);
     } catch (error) {
-      console.error("Pipeline communication tracking failure:", error);
+      console.error("Webhook processing failure:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -46,8 +47,10 @@ export default function FunnelModal({ isOpen, onClose }: FunnelModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Backdrop Dim Blur Panel */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose} />
 
+      {/* Main Glassmorphic Funnel Exchange Card */}
       <div className="relative w-full max-w-md rounded-3xl border border-white/10 bg-slate-900/90 p-6 md:p-8 shadow-2xl backdrop-blur-xl text-white text-left overflow-hidden">
         <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
           <X className="h-5 w-5" />
@@ -55,6 +58,7 @@ export default function FunnelModal({ isOpen, onClose }: FunnelModalProps) {
 
         {!isSubmitted ? (
           <div>
+            {/* Value Indicator Banner Header */}
             <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-sky-500/10 text-sky-400 mb-4">
               <Gift className="h-5 w-5" />
             </div>
