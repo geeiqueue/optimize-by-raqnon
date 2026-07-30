@@ -1,71 +1,98 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import * as THREE from "three";
+
+function NetworkNodes({ count = 50 }: { count?: number }) {
+  const groupRef = useRef<THREE.Group>(null);
+
+  const positions = useMemo(() => {
+    const pts: THREE.Vector3[] = [];
+    for (let i = 0; i < count; i++) {
+      pts.push(
+        new THREE.Vector3(
+          (Math.random() - 0.5) * 10,
+          (Math.random() - 0.5) * 6,
+          (Math.random() - 0.5) * 6
+        )
+      );
+    }
+    return pts;
+  }, [count]);
+
+  const lines = useMemo(() => {
+    const segments: [THREE.Vector3, THREE.Vector3][] = [];
+    positions.forEach((p, i) => {
+      const nearest = positions
+        .map((q, j) => ({ j, d: p.distanceTo(q) }))
+        .filter((o) => o.j !== i)
+        .sort((a, b) => a.d - b.d)
+        .slice(0, 2);
+      nearest.forEach(({ j }) => {
+        if (j > i) segments.push([p, positions[j]]);
+      });
+    });
+    return segments;
+  }, [positions]);
+
+  useFrame((_, delta) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y += delta * 0.05;
+    }
+  });
+
+  return (
+    <group ref={groupRef}>
+      {positions.map((p, i) => (
+        <mesh key={i} position={p}>
+          <sphereGeometry args={[0.04, 8, 8]} />
+          <meshBasicMaterial color="#38bdf8" />
+        </mesh>
+      ))}
+      {lines.map(([a, b], i) => (
+        <line key={i}>
+          <bufferGeometry>
+            <bufferAttribute
+              attach="attributes-position"
+              args={[new Float32Array([a.x, a.y, a.z, b.x, b.y, b.z]), 3]}
+            />
+          </bufferGeometry>
+          <lineBasicMaterial color="#0ea5e9" transparent opacity={0.25} />
+        </line>
+      ))}
+    </group>
+  );
+}
 
 export default function BusinessNetwork() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      const xPercent = (e.clientX / window.innerWidth) * 100;
-      const yPercent = (e.clientY / window.innerHeight) * 100;
-      setMousePos({ x: xPercent, y: yPercent });
+      setMousePos({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100,
+      });
     };
-
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
     <div className="absolute inset-0 h-full w-full bg-[#070b12] overflow-hidden pointer-events-none">
-      {/* Premium Tech Blueprint Matrix Mesh lines */}
-      <div 
-        className="absolute inset-0 opacity-15 transition-transform duration-300 ease-out"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(56, 189, 248, 0.12) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(56, 189, 248, 0.12) 1px, transparent 1px)
-          `,
-          backgroundSize: "50px 50px",
-          transform: `translate(${(mousePos.x - 50) * 0.04}px, ${(mousePos.y - 50) * 0.04}px)`,
-        }}
-      />
-
-      {/* Cyber Constellation Data Node Points Array */}
-      <div 
-        className="absolute inset-0 opacity-30 transition-transform duration-500 ease-out"
-        style={{
-          backgroundImage: "radial-gradient(circle, rgba(34, 211, 238, 0.2) 1px, transparent 2px)",
-          backgroundSize: "100px 100px",
-          transform: `translate(${(mousePos.x - 50) * -0.06}px, ${(mousePos.y - 50) * -0.06}px)`,
-        }}
-      />
-      {/* Floating High-Contrast Digital Node Orbs */}
-      <div className="absolute inset-0">
-        {/* Node 1: Left Upper Track */}
-        <div className="absolute top-[25%] left-[18%] h-2 w-2 rounded-full bg-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.8)] animate-pulse" />
-        <div className="absolute top-[25%] left-[18%] h-[150px] w-[1px] bg-gradient-to-b from-sky-400/30 to-transparent rotate-[45deg] origin-top" />
-
-        {/* Node 2: Center Content Track */}
-        <div className="absolute top-[45%] left-[48%] h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
-        <div className="absolute top-[45%] left-[48%] h-[120px] w-[1px] bg-gradient-to-b from-cyan-400/30 to-transparent rotate-[-30deg] origin-top" />
-
-        {/* Node 3: Right Upper Track */}
-        <div className="absolute top-[20%] left-[82%] h-2 w-2 rounded-full bg-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.8)] animate-pulse" />
-        
-        {/* Node 4: Left Lower Track */}
-        <div className="absolute top-[75%] left-[25%] h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
-        <div className="absolute top-[75%] left-[25%] h-[100px] w-[1px] bg-gradient-to-r from-cyan-400/20 to-transparent" />
-
-        {/* Node 5: Right Lower Track */}
-        <div className="absolute top-[68%] left-[75%] h-2 w-2 rounded-full bg-sky-400 shadow-[0_0_15px_rgba(56,189,248,0.8)] animate-pulse" />
+      <div className="absolute inset-0 opacity-70">
+        <Canvas camera={{ position: [0, 0, 8], fov: 50 }}>
+          <ambientLight intensity={0.5} />
+          <NetworkNodes count={50} />
+        </Canvas>
       </div>
 
-      {/* Dynamic Cursor Spotlight Radial Glow */}
-      <div 
-        className="absolute inset-0 mixed-blend-screen transition-all duration-200 ease-out hidden md:block"
+      {/* Cursor spotlight glow, layered above the 3D canvas */}
+      <div
+        className="absolute inset-0 transition-all duration-200 ease-out hidden md:block"
         style={{
-          background: `radial-gradient(600px circle at ${mousePos.x}% ${mousePos.y}%, rgba(14, 165, 233, 0.08), transparent 80%)`
+          background: `radial-gradient(600px circle at ${mousePos.x}% ${mousePos.y}%, rgba(14, 165, 233, 0.08), transparent 80%)`,
         }}
       />
     </div>
