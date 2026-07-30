@@ -24,29 +24,33 @@ export default function Home() {
       {/* Global Ingestion Funnel Overlay Card */}
       <FunnelModal isOpen={isFunnelOpen} onClose={() => setIsFunnelOpen(false)} />
 
-      {/* Comprehensive multi-phrase click hook catcher */}
+      {/* Upgraded click interceptor: Only fires on true button and anchor actions */}
       <div 
         className="relative z-10" 
         onClick={(e) => {
           const target = e.target as HTMLElement;
-          const buttonText = target.innerText?.toLowerCase().trim() || "";
-          const linkHref = target.closest("a")?.getAttribute("href") || "";
+          
+          // Locate the nearest clickable interactive button or link wrapper container
+          const interactiveElement = target.closest("button, a");
+          if (!interactiveElement) return;
 
-          // Explicit target arrays mapping to every active CTA copy configuration on your page
+          const buttonText = (interactiveElement as HTMLElement).innerText?.toLowerCase().trim() || "";
+          const linkHref = interactiveElement.getAttribute("href") || "";
+
+          // Strict phrase array matching explicit layout text tokens exactly
           const targetPhrases = [
             "hire me", 
             "let us talk", 
             "let us map it out", 
             "start a project", 
-            "send an email", 
-            "view project"
+            "send an email"
           ];
 
-          // If a user clicks an explicit layout link wrapper or any matched CTA phrase text block
+          // Fires the pop-up panel ONLY if a true interactive control element matches the strict logic
           if (
             linkHref === "#contact" || 
             linkHref.startsWith("mailto:") ||
-            targetPhrases.some(phrase => buttonText.includes(phrase))
+            targetPhrases.includes(buttonText)
           ) {
             openFunnel(e as unknown as React.MouseEvent);
           }

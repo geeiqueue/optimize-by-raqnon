@@ -14,7 +14,7 @@ export default function About() {
         {/* Interactive Tech Stack Terminal Card */}
         <div className="relative group">
           <div className="flex aspect-[4/5] flex-col rounded-3xl border border-white/5 bg-slate-950/60 shadow-2xl backdrop-blur-md transition-all duration-300 hover:border-white/10 overflow-hidden font-mono text-left">
-            {/* Terminal Top Window Title Bar Controls */}
+            {/* Terminal Window Controls */}
             <div className="flex items-center justify-between border-b border-white/5 bg-slate-900/50 px-4 py-3">
               <div className="flex gap-2">
                 <div className="h-2.5 w-2.5 rounded-full bg-rose-500/70" />
@@ -55,8 +55,9 @@ export default function About() {
             04 · ABOUT ME
           </p>
 
+          {/* Streamlined premium headline to eliminate the introduction redundancy */}
           <h2 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight text-slate-100 md:text-5xl">
-            Hey, I am LJ.
+            My engineering philosophy.
           </h2>
 
           <div className="mt-8 space-y-6 text-base leading-relaxed text-slate-400">
