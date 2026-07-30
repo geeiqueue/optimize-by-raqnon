@@ -2,67 +2,65 @@ export default function HowIWork() {
   const steps = [
     {
       number: "01",
-      title: "I listen first.",
+      title: "I listen first",
       description:
-        "Before writing a single line of code, I want to understand your business. The better I understand the problem, the better the solution will be.",
+        "Before writing code, I want to understand your daily business workflow. The better I see the actual problem, the simpler and more effective the final tool will be.",
     },
     {
       number: "02",
-      title: "I keep things simple.",
+      title: "I keep things simple",
       description:
-        "I don't build features just because they're possible. I build what actually helps your business and leave out the things that don't.",
+        "I do not build extra features just because they sound flashy. I focus entirely on what saves you time and leave out all the heavy clutter.",
     },
     {
       number: "03",
-      title: "I build it properly.",
+      title: "I build it properly",
       description:
-        "Clean code, testing, and security are part of every project. I want you to have something that's reliable today and easy to improve tomorrow.",
+        "Clean logic, strict testing, and solid security are standard parts of my build process. You get a reliable asset that is easy to upgrade down the road.",
     },
     {
       number: "04",
-      title: "I don't disappear after launch.",
+      title: "I stay around post-launch",
       description:
-        "Launching isn't the finish line. If something needs improving or you have new ideas later on, I'm here to help.",
+        "Going live is not the finish line. If your processes scale, something needs a tweak, or you get fresh ideas later on, I am right here to help.",
     },
   ];
 
   return (
     <section
       id="how-i-work"
-      className="border-b bg-gray-50 py-24"
+      className="relative isolate border-b border-white/5 bg-[#070b12] py-24 text-white"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-gray-500">
-            HOW I WORK
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+            03 · MY METHOD
           </p>
 
-          <h2 className="mt-4 text-4xl font-bold tracking-tight text-black md:text-5xl">
-            Every project starts with a conversation.
+          <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight text-white md:text-5xl">
+            Every project starts with a real conversation.
           </h2>
 
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            I like keeping things simple. We'll talk about what you're trying to
-            achieve, figure out the best way to get there, and build something
-            that makes your work easier.
+          <p className="mt-6 text-lg leading-relaxed text-slate-300">
+            I value keeping setups lean. We map out what you are looking to achieve, find the most direct route to get there, and build software that makes your business easier to run.
           </p>
         </div>
 
-        <div className="mt-20 grid gap-8 md:grid-cols-2">
+        <div className="mt-20 grid gap-6 sm:grid-cols-2">
           {steps.map((step) => (
             <div
               key={step.number}
-              className="rounded-3xl border bg-white p-8"
+              className="group relative rounded-3xl border border-white/5 bg-slate-950/40 p-8 shadow-xl backdrop-blur-md transition-all duration-300 hover:border-white/10 hover:bg-white/[0.02]"
             >
-              <p className="text-sm font-semibold text-gray-400">
-                {step.number}
-              </p>
+              <span className="text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-sky-400 transition-colors">
+                PHASE {step.number}
+              </span>
 
-              <h3 className="mt-4 text-2xl font-bold text-black">
+              <h3 className="mt-3 text-2xl font-bold text-white">
                 {step.title}
               </h3>
 
-              <p className="mt-4 leading-8 text-gray-600">
+              <p className="mt-3 text-base leading-relaxed text-slate-400">
                 {step.description}
               </p>
             </div>
