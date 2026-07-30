@@ -46,7 +46,7 @@ function NetworkNodes({ count = 50 }: { count?: number }) {
     <group ref={groupRef}>
       {positions.map((p, i) => (
         <mesh key={i} position={p}>
-          <sphereGeometry args={[0.04, 8, 8]} />
+          <sphereGeometry args={[0.15, 8, 8]} />
           <meshBasicMaterial color="#38bdf8" />
         </mesh>
       ))}

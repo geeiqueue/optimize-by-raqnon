@@ -24,6 +24,7 @@ const principles = [
 export default function Hero() {
   return (
     <section className="relative isolate overflow-hidden border-b border-slate-800 bg-[#070b12] text-white">
+      <BusinessNetwork />
       <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-[#070b12]/90 via-[#070b12]/50 to-[#070b12]/80" />
 
       <div className="relative z-20 mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-10 px-6 py-12 lg:grid-cols-[1.15fr_0.85fr] lg:px-8">
