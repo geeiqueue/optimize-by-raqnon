@@ -58,8 +58,9 @@ export default function Footer() {
 
             <ul className="mt-5 space-y-3 text-sm font-medium text-slate-400">
               <li>
-                <a href="mailto:your-email@example.com" className="transition-colors hover:text-white">
-                  Email
+                {/* Changed layout text value configuration here to link up with global catcher */}
+                <a href="#contact" className="transition-colors hover:text-white">
+                  Send an Email
                 </a>
               </li>
               <li>
